@@ -7,142 +7,245 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;700&family=Noto+Serif+SC:wght@300;400&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --violet-deep:  #1a0533;
-      --violet-mid:   #3b1069;
-      --violet-soft:  #7b2fbf;
-      --violet-glow:  #b06bff;
-      --violet-pale:  #ddb8ff;
-      --white-ghost:  rgba(255,255,255,0.85);
+      --bg-base:      #f3eeff;
+      --bg-top:       #ede4ff;
+      --bg-mid:       #d8c4ff;
+      --violet-soft:  #c4a0ff;
+      --violet-mid:   #a673e8;
+      --violet-deep:  #7c4bc0;
+      --violet-glow:  #b48fff;
+      --text-main:    #3a2060;
+      --text-sub:     #7a5aaa;
+      --text-light:   #b09ad8;
+      --white:        #ffffff;
+      --card-bg:      rgba(255,255,255,0.6);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html, body {
-      width: 100%; height: 100%;
-      overflow: hidden;
-      background: var(--violet-deep);
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
       font-family: 'Noto Serif KR', serif;
-      color: var(--white-ghost);
-      cursor: default;
+      color: var(--text-main);
+      background: var(--bg-base);
+      overflow-x: hidden;
     }
 
     /* ─── Gradient background ─── */
     .bg-gradient {
       position: fixed; inset: 0; z-index: 0;
       background:
-        radial-gradient(ellipse 80% 60% at 20% 10%,  #4a0f9e55 0%, transparent 70%),
-        radial-gradient(ellipse 60% 80% at 80% 90%,  #7b10cc44 0%, transparent 65%),
-        radial-gradient(ellipse 100% 100% at 50% 50%, #2d0a5e   0%, #0d0020 100%);
-      animation: breathe 12s ease-in-out infinite alternate;
+        radial-gradient(ellipse 70% 50% at 15% 5%,  #e0ccff 0%, transparent 60%),
+        radial-gradient(ellipse 55% 70% at 85% 90%,  #d4b8ff 0%, transparent 65%),
+        radial-gradient(ellipse 80% 80% at 50% 50%,  #ecdeff 0%, #f7f0ff 100%);
+      animation: breathe 14s ease-in-out infinite alternate;
     }
     @keyframes breathe {
-      from { opacity: 0.85; }
+      from { opacity: 0.9; }
       to   { opacity: 1; }
     }
 
-    /* ─── Floating hanja layer ─── */
+    /* ─── Hanja floating layer ─── */
     .hanja-layer {
       position: fixed; inset: 0; z-index: 1;
       pointer-events: none;
       overflow: hidden;
     }
-
     .hanja {
       position: absolute;
       font-family: 'Noto Serif SC', 'Noto Serif KR', serif;
       font-weight: 300;
-      color: var(--violet-glow);
+      color: var(--violet-mid);
       opacity: 0;
       animation: floatUp var(--dur, 18s) var(--delay, 0s) ease-in-out infinite;
-      text-shadow: 0 0 40px var(--violet-soft), 0 0 80px #7b2fbf66;
+      text-shadow: 0 0 30px var(--violet-soft);
       user-select: none;
     }
-
     @keyframes floatUp {
-      0%   { transform: translateY(100vh) rotate(var(--rot, 0deg)) scale(0.8); opacity: 0; }
-      10%  { opacity: var(--peak, 0.18); }
-      80%  { opacity: var(--peak, 0.18); }
-      100% { transform: translateY(-20vh) rotate(calc(var(--rot, 0deg) + 15deg)) scale(1.1); opacity: 0; }
-    }
-
-    /* ─── Noise grain overlay ─── */
-    .grain {
-      position: fixed; inset: 0; z-index: 2;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
-      background-size: 180px 180px;
-      opacity: 0.55;
-      pointer-events: none;
+      0%   { transform: translateY(100vh) rotate(var(--rot,0deg)) scale(0.8); opacity: 0; }
+      10%  { opacity: var(--peak, 0.13); }
+      80%  { opacity: var(--peak, 0.13); }
+      100% { transform: translateY(-20vh) rotate(calc(var(--rot,0deg) + 15deg)) scale(1.1); opacity: 0; }
     }
 
     /* ─── Shimmer lines ─── */
     .shimmer-line {
       position: fixed; z-index: 2;
       width: 1px;
-      background: linear-gradient(to bottom, transparent, var(--violet-glow), transparent);
+      background: linear-gradient(to bottom, transparent, var(--violet-soft), transparent);
       opacity: 0;
-      animation: shimmerLine var(--sd, 8s) var(--sl, 0s) ease-in-out infinite;
+      animation: shimmerLine var(--sd,8s) var(--sl,0s) ease-in-out infinite;
       pointer-events: none;
     }
     @keyframes shimmerLine {
-      0%   { opacity: 0; height: 0;    top: 0; }
-      30%  { opacity: 0.25; }
+      0%   { opacity: 0; height: 0;   top: 0; }
+      30%  { opacity: 0.3; }
       50%  { height: 40vh; }
       80%  { opacity: 0; }
-      100% { opacity: 0; height: 0;    top: 100%; }
+      100% { opacity: 0; height: 0;   top: 100%; }
     }
 
-    /* ─── Content ─── */
-    .stage {
-      position: fixed; inset: 0; z-index: 10;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 2.2rem;
+    /* ─── Scroll wrapper ─── */
+    .scroll-wrap {
+      position: relative; z-index: 10;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 1.5rem 5rem;
+    }
+
+    /* ─── Hero section ─── */
+    .hero {
+      width: 100%;
+      max-width: 720px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       text-align: center;
-      padding: 2rem;
+      padding: 6rem 0 3rem;
+      gap: 1.2rem;
     }
 
     .badge {
-      font-size: 0.72rem;
-      letter-spacing: 0.35em;
+      font-size: 0.68rem;
+      letter-spacing: 0.38em;
       text-transform: uppercase;
-      color: var(--violet-pale);
+      color: var(--violet-deep);
       opacity: 0;
       animation: fadeIn 1.2s 0.3s ease forwards;
     }
 
     .name {
-      font-size: clamp(2.6rem, 6vw, 5rem);
+      font-size: clamp(1.9rem, 4.5vw, 3.2rem);
       font-weight: 700;
-      letter-spacing: -0.01em;
-      line-height: 1.1;
-      color: #fff;
-      text-shadow: 0 0 60px var(--violet-glow), 0 0 120px var(--violet-soft);
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      text-shadow: 0 2px 24px rgba(160,100,240,0.18);
       opacity: 0;
-      animation: fadeUp 1.4s 0.7s cubic-bezier(0.16,1,0.3,1) forwards;
+      animation: fadeUp 1.4s 0.6s cubic-bezier(0.16,1,0.3,1) forwards;
     }
 
     .tagline {
-      font-size: clamp(1rem, 2.5vw, 1.5rem);
+      font-size: clamp(1rem, 2.6vw, 1.4rem);
       font-weight: 300;
-      color: var(--violet-pale);
-      letter-spacing: 0.15em;
+      color: var(--violet-deep);
+      letter-spacing: 0.18em;
       opacity: 0;
-      animation: fadeUp 1.4s 1.1s cubic-bezier(0.16,1,0.3,1) forwards;
+      animation: fadeUp 1.4s 1s cubic-bezier(0.16,1,0.3,1) forwards;
     }
 
+    .hanja-row {
+      display: flex;
+      gap: 1.2rem;
+      align-items: center;
+      opacity: 0;
+      animation: fadeIn 1.4s 1.4s ease forwards;
+    }
+    .hanja-chip {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.18rem;
+    }
+    .hanja-char {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 1.6rem;
+      color: var(--violet-deep);
+      text-shadow: 0 0 16px var(--violet-soft);
+    }
+    .hanja-label {
+      font-size: 0.55rem;
+      letter-spacing: 0.12em;
+      color: var(--text-light);
+    }
+    .hanja-dot {
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: var(--violet-soft);
+      margin-top: 0.7rem;
+    }
+
+    /* ─── Divider ─── */
     .divider {
-      width: 60px; height: 1px;
-      background: linear-gradient(to right, transparent, var(--violet-glow), transparent);
+      width: 80px; height: 1px;
+      background: linear-gradient(to right, transparent, var(--violet-mid), transparent);
       opacity: 0;
-      animation: fadeIn 1.4s 1.5s ease forwards;
+      animation: fadeIn 1.4s 1.7s ease forwards;
+      margin: 0.5rem 0;
     }
 
-    .sub {
-      font-size: 0.85rem;
-      letter-spacing: 0.25em;
-      color: rgba(255,255,255,0.45);
+    /* ─── Profile cards ─── */
+    .cards-section {
+      width: 100%;
+      max-width: 720px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.2rem;
       opacity: 0;
-      animation: fadeIn 1.4s 1.9s ease forwards;
+      animation: fadeUp 1.4s 1.8s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(180,143,255,0.3);
+      border-radius: 20px;
+      padding: 1.8rem 1.6rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
+      cursor: default;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(160,100,230,0.15);
+      border-color: rgba(180,143,255,0.55);
+    }
+
+    .card-icon {
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--violet-soft), var(--bg-mid));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.01em;
+    }
+
+    .card-desc {
+      font-size: 0.82rem;
+      font-weight: 300;
+      color: var(--text-sub);
+      line-height: 1.65;
+      letter-spacing: 0.03em;
+    }
+
+    /* ─── Bottom hanja sub ─── */
+    .sub-footer {
+      margin-top: 3rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.3em;
+      color: var(--text-light);
+      opacity: 0;
+      animation: fadeIn 1.4s 2.4s ease forwards;
+      text-align: center;
     }
 
     /* ─── Music toggle ─── */
@@ -150,25 +253,28 @@
       position: fixed; bottom: 2rem; right: 2rem; z-index: 20;
       width: 48px; height: 48px;
       border-radius: 50%;
-      border: 1px solid rgba(176,107,255,0.4);
-      background: rgba(58,12,105,0.5);
+      border: 1px solid rgba(160,100,230,0.35);
+      background: rgba(255,255,255,0.65);
       backdrop-filter: blur(12px);
-      color: var(--violet-pale);
+      color: var(--violet-deep);
       font-size: 1.2rem;
       cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
       opacity: 0;
-      animation: fadeIn 1.4s 2.4s ease forwards;
+      animation: fadeIn 1.4s 2.6s ease forwards;
+      box-shadow: 0 2px 12px rgba(160,100,230,0.12);
     }
     .music-btn:hover {
-      border-color: var(--violet-glow);
-      background: rgba(90,20,160,0.7);
-      box-shadow: 0 0 24px var(--violet-soft);
+      border-color: var(--violet-mid);
+      box-shadow: 0 0 20px rgba(160,100,230,0.25);
     }
-    .music-btn.playing { box-shadow: 0 0 20px var(--violet-glow); }
+    .music-btn.playing {
+      border-color: var(--violet-deep);
+      box-shadow: 0 0 22px rgba(160,100,230,0.35);
+    }
 
-    /* ─── Ripple cursor ─── */
+    /* ─── Ripple ─── */
     .ripple {
       position: fixed; z-index: 5;
       border-radius: 50%;
@@ -176,85 +282,142 @@
       animation: rippleAnim 1.2s ease-out forwards;
     }
     @keyframes rippleAnim {
-      from { width: 0; height: 0; opacity: 0.6; transform: translate(-50%,-50%); }
+      from { width: 0; height: 0; opacity: 0.5; transform: translate(-50%,-50%); }
       to   { width: 120px; height: 120px; opacity: 0; transform: translate(-50%,-50%); }
     }
 
-    /* ─── Keyframe helpers ─── */
+    /* ─── Keyframes ─── */
     @keyframes fadeIn {
       from { opacity: 0; }
       to   { opacity: 1; }
     }
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
+      from { opacity: 0; transform: translateY(28px); }
       to   { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
 
-  <!-- Background -->
   <div class="bg-gradient"></div>
-
-  <!-- Hanja floating characters: 內 外 心 行 -->
   <div class="hanja-layer" id="hanjaLayer"></div>
 
-  <!-- Grain -->
-  <div class="grain"></div>
+  <div class="shimmer-line" style="left:12%; --sd:13s; --sl:0s;"></div>
+  <div class="shimmer-line" style="left:35%; --sd:10s; --sl:4s;"></div>
+  <div class="shimmer-line" style="left:65%; --sd:15s; --sl:2s;"></div>
+  <div class="shimmer-line" style="left:85%; --sd:11s; --sl:7s;"></div>
 
-  <!-- Shimmer lines -->
-  <div class="shimmer-line" style="left:15%; --sd:11s; --sl:0s;"></div>
-  <div class="shimmer-line" style="left:38%; --sd:14s; --sl:3s;"></div>
-  <div class="shimmer-line" style="left:62%; --sd:9s;  --sl:6s;"></div>
-  <div class="shimmer-line" style="left:82%; --sd:13s; --sl:1.5s;"></div>
+  <div class="scroll-wrap">
 
-  <!-- Content -->
-  <div class="stage">
-    <p class="badge">Personal Introduction</p>
-    <h1 class="name">최경희</h1>
-    <p class="tagline">안과 밖의 통합을 꿈꾸는</p>
-    <div class="divider"></div>
-    <p class="sub">內 · 外 · 心 · 行</p>
+    <!-- Hero -->
+    <div class="hero">
+      <p class="badge">안과 밖의 통합을 꿈꾸는</p>
+      <h1 class="name">최경희</h1>
+      <p class="tagline">처음 만나서 반가워요 :)</p>
+
+      <div class="hanja-row">
+        <div class="hanja-chip">
+          <span class="hanja-char">內</span>
+          <span class="hanja-label">안 내</span>
+        </div>
+        <div class="hanja-dot"></div>
+        <div class="hanja-chip">
+          <span class="hanja-char">外</span>
+          <span class="hanja-label">밖 외</span>
+        </div>
+        <div class="hanja-dot"></div>
+        <div class="hanja-chip">
+          <span class="hanja-char">心</span>
+          <span class="hanja-label">마음 심</span>
+        </div>
+        <div class="hanja-dot"></div>
+        <div class="hanja-chip">
+          <span class="hanja-char">行</span>
+          <span class="hanja-label">행할 행</span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+    </div>
+
+    <!-- Profile cards -->
+    <div class="cards-section">
+
+      <div class="card">
+        <div class="card-icon">🌏</div>
+        <div class="card-body">
+          <p class="card-title">영어 교사</p>
+          <p class="card-desc">언어는 세계를 여는 창이라고 믿어요. 영어를 통해 더 넓은 세상과 연결되는 경험을 함께 나누고 싶습니다.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🌱</div>
+        <div class="card-body">
+          <p class="card-title">생활교육 전문가</p>
+          <p class="card-desc">교실 안과 밖, 일상의 모든 순간이 배움의 자리예요. 아이들이 삶을 온전히 살아갈 수 있도록 곁에서 함께합니다.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🎵</div>
+        <div class="card-body">
+          <p class="card-title">음악을 사랑하는 사람</p>
+          <p class="card-desc">음악은 저에게 언어 이전의 언어예요. 멜로디 속에서 위로를 받고, 리듬 속에서 다시 힘을 얻습니다.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">✏️</div>
+        <div class="card-body">
+          <p class="card-title">수업을 연구하는 사람</p>
+          <p class="card-desc">좋은 수업 하나가 아이의 삶을 바꿀 수 있다고 믿어요. 더 나은 배움의 순간을 만들기 위해 늘 고민합니다.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="sub-footer">內 · 外 · 心 · 行 — 안과 밖, 마음과 행동의 통합</p>
+
   </div>
 
-  <!-- Music button -->
+  <!-- Music -->
   <button class="music-btn" id="musicBtn" title="배경음악 켜기/끄기">♪</button>
   <audio id="bgAudio" src="bg.mp3" loop></audio>
 
   <script>
-    /* ── Hanja generator ── */
+    /* ── Hanja floating ── */
     const chars  = ['內','外','心','行'];
     const labels = ['안 내','밖 외','마음 심','행할 행'];
     const layer  = document.getElementById('hanjaLayer');
-    const COUNT  = 28;
 
-    for (let i = 0; i < COUNT; i++) {
+    for (let i = 0; i < 28; i++) {
       const el  = document.createElement('span');
-      const idx = i % chars.length;
-      el.className  = 'hanja';
+      const idx = i % 4;
+      el.className   = 'hanja';
       el.textContent = chars[idx];
       el.title       = labels[idx];
 
-      const size  = 3 + Math.random() * 9;       // rem
-      const left  = Math.random() * 96;           // %
-      const dur   = 16 + Math.random() * 18;      // s
-      const delay = Math.random() * 20;           // s
-      const rot   = (Math.random() - 0.5) * 30;  // deg
-      const peak  = 0.06 + Math.random() * 0.18;
+      const size  = 3 + Math.random() * 8;
+      const left  = Math.random() * 96;
+      const dur   = 18 + Math.random() * 18;
+      const delay = Math.random() * 22;
+      const rot   = (Math.random() - 0.5) * 28;
+      const peak  = 0.05 + Math.random() * 0.12;
 
       el.style.cssText = `
-        font-size: ${size}rem;
-        left: ${left}%;
-        bottom: -10%;
-        --dur: ${dur}s;
-        --delay: ${delay}s;
-        --rot: ${rot}deg;
-        --peak: ${peak};
+        font-size:${size}rem;
+        left:${left}%;
+        bottom:-10%;
+        --dur:${dur}s;
+        --delay:${delay}s;
+        --rot:${rot}deg;
+        --peak:${peak};
       `;
       layer.appendChild(el);
     }
 
-    /* ── Music toggle ── */
+    /* ── Music ── */
     const btn   = document.getElementById('musicBtn');
     const audio = document.getElementById('bgAudio');
     let playing = false;
@@ -273,15 +436,15 @@
       }
     });
 
-    /* ── Ripple on click ── */
-    document.addEventListener('click', (e) => {
+    /* ── Ripple ── */
+    document.addEventListener('click', e => {
       if (e.target === btn) return;
       const r = document.createElement('div');
       r.className = 'ripple';
       r.style.cssText = `
-        left: ${e.clientX}px; top: ${e.clientY}px;
-        border: 1px solid rgba(176,107,255,0.6);
-        background: radial-gradient(circle, rgba(176,107,255,0.15) 0%, transparent 70%);
+        left:${e.clientX}px; top:${e.clientY}px;
+        border:1px solid rgba(160,100,230,0.5);
+        background:radial-gradient(circle, rgba(160,100,230,0.1) 0%, transparent 70%);
       `;
       document.body.appendChild(r);
       r.addEventListener('animationend', () => r.remove());
